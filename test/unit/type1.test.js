@@ -6,7 +6,7 @@ const type1Model = require("../../models/type1");
 const httpMocks = require("node-mocks-http");
 const newVal = require("../data/type1data.json");
 const newVals = require("../data/all-type1data.json");
-const type1 = require("../../models/type1");
+// const type1 = require("../../models/type1");
 
 type1Model.create = jest.fn();
 type1Model.find = jest.fn();
