@@ -11,6 +11,7 @@ const type1 = require("../../models/type1");
 type1Model.create = jest.fn();
 type1Model.find = jest.fn();
 type1Model.findById = jest.fn();
+type1Model.findByIdAndUpdate = jest.fn();
 
 const typeId = "61a71517a0958bee17adc0e8";
 
@@ -116,5 +117,21 @@ describe("Type Ctrt GetById", async () => {
     type1Model.findById.mockReturnValue(rejectedPromise);
     await type1Controller.getTypesById(req, res, next);
     expect(next).toHaveBeenCalledWith(errMsg);
+  });
+});
+
+describe("type ctrl update", () => {
+  it("shoud have an updateType function", () => {
+    expect(typeof type1Controller.updateType).toBe("function");
+  });
+  it("should call typeModel.findByIdAndUpdate", async () => {
+    req.params.typeId = typeId;
+    req.body = { name: "updated name", description: "updated desc" };
+    await type1Controller.updateType(req, res, next);
+    expect(type1Model.findByIdAndUpdate).toHaveBeenCalledWith(
+      typeId,
+      { name: "updated name", description: "updated desc" },
+      { new: true }
+    );
   });
 });
