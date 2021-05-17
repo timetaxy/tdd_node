@@ -41,7 +41,20 @@ exports.getTypesById = async (req, res, next) => {
 };
 
 exports.updateType = async (req, res, next) => {
-  await type1Model.findByIdAndUpdate(req.params.typeId, req.body, {
-    new: true,
-  });
+  try {
+    let updatedType = await type1Model.findByIdAndUpdate(
+      req.params.typeId,
+      req.body,
+      {
+        new: true,
+      }
+    );
+    if (updatedType) {
+      res.status(200).json(updatedType);
+    } else {
+      res.status(404).send();
+    }
+  } catch (error) {
+    next(error);
+  }
 };
