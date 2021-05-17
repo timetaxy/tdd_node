@@ -14,6 +14,7 @@ type1Model.findById = jest.fn();
 type1Model.findByIdAndUpdate = jest.fn();
 
 const typeId = "61a71517a0958bee17adc0e8";
+const updatedType = { name: "updated name", description: "updated desc" };
 
 let req, res, next;
 
@@ -86,7 +87,7 @@ describe("type controller Get", () => {
   });
 });
 
-describe("Type Ctrt GetById", async () => {
+describe("Type Ctrt GetById", () => {
   it("data ctrl getById", () => {
     expect(typeof type1Controller.getTypesById).toBe("function");
   });
@@ -133,5 +134,29 @@ describe("type ctrl update", () => {
       { name: "updated name", description: "updated desc" },
       { new: true }
     );
+  });
+
+  it("shouldd return json body and res code 200", async () => {
+    req.params.typeId = typeId;
+    req.body = updatedType;
+    type1Model.findByIdAndUpdate.mockReturnValue(updatedType);
+    await type1Controller.updateType(req, res, next);
+    expect(res._isEndCalled()).toBeTruthy();
+    expect(res.statusCode).toBe(200);
+    expect(res._getJSONData()).toStrictEqual(updatedType);
+  });
+
+  it("should handle 404 when item doesnt exist", async () => {
+    type1Model.findByIdAndUpdate.mockReturnValue(null);
+    await type1Controller.updateType(req, res, next);
+    expect(res.statusCode).toBe(404);
+    expect(res._isEndCalled()).toBeTruthy(); //mean exist return value
+  });
+  it("shoud handle err", async () => {
+    const errMsg = { message: "error" };
+    const rejectedPromise = Promise.reject(errMsg);
+    type1Model.findByIdAndUpdate.mockReturnValue(rejectedPromise);
+    await type1Controller.updateType(req, res, next);
+    expect(next.Promise).toHaveBeenCalledWith(errMsg);
   });
 });
