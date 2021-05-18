@@ -58,3 +58,17 @@ it("should ret 404 on PUT /api/types", async () => {
     .send({ name: "updated name", description: "updated desc" });
   expect(res.statusCode).toBe(404);
 });
+
+it("DELETE /api/types", async () => {
+  const res = await st(app)
+    .delete("/api/types", +firstType._id)
+    .send();
+  expect(res.statusCode).toBe(200);
+});
+
+it("DELETE id doesnt exist /api/types/:typeId", async () => {
+  const res = await request(app)
+    .delete("/api/types" + firstType._id)
+    .send();
+  expect(res.statusCode).toBe(404);
+});

@@ -12,6 +12,7 @@ type1Model.create = jest.fn();
 type1Model.find = jest.fn();
 type1Model.findById = jest.fn();
 type1Model.findByIdAndUpdate = jest.fn();
+type1Model.findByIdAndDelete = jest.fn();
 
 const typeId = "61a71517a0958bee17adc0e8";
 const updatedType = { name: "updated name", description: "updated desc" };
@@ -152,11 +153,50 @@ describe("type ctrl update", () => {
     expect(res.statusCode).toBe(404);
     expect(res._isEndCalled()).toBeTruthy(); //mean exist return value
   });
-  it("shoud handle err", async () => {
+  it("should handle err", async () => {
     const errMsg = { message: "error" };
     const rejectedPromise = Promise.reject(errMsg);
     type1Model.findByIdAndUpdate.mockReturnValue(rejectedPromise);
     await type1Controller.updateType(req, res, next);
-    expect(next.Promise).toHaveBeenCalledWith(errMsg);
+    expect(next).toHaveBeenCalledWith(errMsg);
+  });
+});
+
+describe("Type ctrl delete", () => {
+  it("should have a delete type function", () => {
+    expect(typeof type1Controller.deleteType).toBe("function");
+  });
+
+  it("should call type1Model.findByIdAndDelete", async () => {
+    req.params.typeId = typeId;
+    await type1Controller.deleteType(req, res, next);
+    expect(type1Model.findByIdAndDelete).toBeCalledWith(typeId);
+  });
+
+  it("should ret 200 res", async () => {
+    let deletedType = {
+      name: "deleted type",
+      description: "deleted",
+    };
+    type1Model.findByIdAndDelete.mockReturnValue(deletedType);
+    await type1Controller.deleteType(req, res, next);
+    expect(res.statusCode).toBe(200);
+    expect(res._getJSONData()).toStrictEqual(deletedType);
+    expect(res._isEndCalled()).toBe;
+  });
+
+  it("should handle 404 when item doesnt exist", async () => {
+    type1Model.findByIdAndDelete.mockReturnValue(null);
+    await type1Controller.deleteType(req, res, next);
+    expect(res.statusCode).toBe(404);
+    expect(res._isEndCalled()).toBeTruthy();
+  });
+
+  it("should handle errors", async () => {
+    const errMsg = { message: "Error deleting" };
+    const rejectedPromise = Promise.reject(errMsg);
+    type1Model.findByIdAndDelete.mockReturnValue(rejectedPromise);
+    await type1Controller.deleteType(req, res, next);
+    expect(next).toHaveBeenCalledWith(errMsg);
   });
 });
