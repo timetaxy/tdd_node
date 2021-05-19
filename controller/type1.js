@@ -58,3 +58,16 @@ exports.updateType = async (req, res, next) => {
     next(error);
   }
 };
+
+exports.deleteType = async (req, res, next) => {
+  try {
+    let deletedType = await type1Model.findByIdAndDelete(req.params.typeId);
+    if (deletedType) {
+      res.status(200).json(deletedType);
+    } else {
+      res.status(404).send();
+    }
+  } catch (error) {
+    next(error);
+  }
+};
