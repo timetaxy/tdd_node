@@ -13,7 +13,7 @@ app.use("/api/1", router1);
 
 const mongo = require("mongoose");
 mongo
-  .connect(env.mongo.uri, { useNewUrlParser: true })
+  .connect(env.mongo.uri, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => {
     console.log("mongo arrived");
   })
