@@ -27,3 +27,11 @@ describe 그룹화블록
 test(it) 개별테스트
 test(it)
 expect... matcher
+
+#mock
+const mockFunction=jest.fn()
+mockFunction('test')
+mockFunction.mockReturnValue('shoud be return this')
+console.log(mockFunction)
+expect(mockFunction).toBeCalledWith('test')
+expect(mockFunction).toBeCalleTimes(1)
