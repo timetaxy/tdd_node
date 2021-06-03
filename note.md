@@ -13,3 +13,11 @@ rdbms:tables, rouws,columns
 mongo:collections,documents,fields
 
 schema? 문서의 구조, 기본값 default:0, 유효성 검사 reauired:true
+
+Unit test should be isolated.
+종속된 클래스의 신속한 오류 검출 가능
+
+#jest
+{filename}.test.js
+{filename}.spec.js
+tests/
