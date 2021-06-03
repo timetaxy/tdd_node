@@ -21,3 +21,9 @@ Unit test should be isolated.
 {filename}.test.js
 {filename}.spec.js
 tests/
+
+#jest format
+describe 그룹화블록
+test(it) 개별테스트
+test(it)
+expect... matcher
