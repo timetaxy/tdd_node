@@ -36,4 +36,9 @@ describe(`Type1 Controller Create`, () => {
     expect(res.statusCode).toBe(201);
     expect(res._isEndCalled()).toBeTruthy();
   });
+  it("should return json body res", () => {
+    type1Model.create.mockReturnValue(newType);
+    type1Controller.createProduct(req, res, next);
+    expect(res._getJSONData()).toStrictEqual(newType);
+  });
 });
