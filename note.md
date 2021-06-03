@@ -35,3 +35,13 @@ mockFunction.mockReturnValue('shoud be return this')
 console.log(mockFunction)
 expect(mockFunction).toBeCalledWith('test')
 expect(mockFunction).toBeCalleTimes(1)
+
+#jest 기본 test환경 jsdom -> node
+jest.config.js생성
+https://jestjs.io/docs/configuration
+
+#unit test 에서 req.body 필요시
+req=httpMocks.createRequest()
+res=httpMocks.createResponse()
+
+#beforeEach 반복, 각 테스트케이스 전 실행
