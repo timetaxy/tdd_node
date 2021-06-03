@@ -31,4 +31,9 @@ describe(`Type1 Controller Create`, () => {
     type1Controller.createProduct(req, res, next);
     expect(type1Model.create).toBeCalledWith(newType);
   });
+  it("should return 201 res code", () => {
+    type1Controller.createProduct(req, res, next);
+    expect(res.statusCode).toBe(201);
+    expect(res._isEndCalled()).toBeTruthy();
+  });
 });
