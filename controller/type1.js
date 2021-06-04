@@ -4,8 +4,9 @@
 // };
 const type1Model = require("../models/type1");
 
-exports.createProduct = (req, res, next) => {
-  const created = type1Model.create(req.body);
+exports.createProduct = async (req, res, next) => {
+  const created = await type1Model.create(req.body);
+  console.log(`created:${created}`);
   res.status(201).json(created);
   // res.status(201).send();
 };

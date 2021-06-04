@@ -22,23 +22,23 @@ describe(`Type1 Controller Create`, () => {
   it(`should have a create product function`, () => {
     expect(typeof type1Controller.createProduct).toBe(`function`);
   });
-  it(`should call type1Model.create`, () => {
+  it(`should call type1Model.create`, async () => {
     // let req = httpMocks.createRequest();
     // let res = httpMocks.createResponse();
     // let next = null;
     // req.body = newType;
 
-    type1Controller.createProduct(req, res, next);
+    await type1Controller.createProduct(req, res, next);
     expect(type1Model.create).toBeCalledWith(newType);
   });
-  it("should return 201 res code", () => {
-    type1Controller.createProduct(req, res, next);
+  it("should return 201 res code", async () => {
+    await type1Controller.createProduct(req, res, next);
     expect(res.statusCode).toBe(201);
     expect(res._isEndCalled()).toBeTruthy();
   });
-  it("should return json body res", () => {
+  it("should return json body res", async () => {
     type1Model.create.mockReturnValue(newType);
-    type1Controller.createProduct(req, res, next);
+    await type1Controller.createProduct(req, res, next);
     expect(res._getJSONData()).toStrictEqual(newType);
   });
 });
