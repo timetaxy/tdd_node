@@ -25,3 +25,4 @@ mongo
 
 app.listen(PORT);
 console.log(`Server opened in PORT:${PORT}`);
+module.exports = app;

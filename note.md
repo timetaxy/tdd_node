@@ -45,3 +45,13 @@ req=httpMocks.createRequest()
 res=httpMocks.createResponse()
 
 #beforeEach 반복, 각 테스트케이스 전 실행
+
+#
+
+Promise.resolve(value)
+Promise.reject(reason)
+next: err handle
+
+# 통합테스트
+
+supertest
