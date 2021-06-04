@@ -13,7 +13,7 @@ let req, res, next;
 beforeEach(() => {
   req = httpMocks.createRequest();
   res = httpMocks.createResponse();
-  next = null;
+  next = jest.fn();
 });
 describe(`Type1 Controller Create`, () => {
   beforeEach(() => {
@@ -40,5 +40,12 @@ describe(`Type1 Controller Create`, () => {
     type1Model.create.mockReturnValue(newType);
     await type1Controller.createProduct(req, res, next);
     expect(res._getJSONData()).toStrictEqual(newType);
+  });
+  it(`should handle err`, async () => {
+    const errMessage = { message: "descripton property missing" };
+    const rejectedPromise = Promise.reject(errMessage);
+    type1Model.create.mockReturnValue(rejectedPromise);
+    await type1Controller.createProduct(req, res, next);
+    expect(next).toBeCalledWith(errMessage);
   });
 });
