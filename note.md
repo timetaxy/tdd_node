@@ -30,6 +30,7 @@ expect... matcher
 
 #mock
 const mockFunction=jest.fn()
+//for trace
 mockFunction('test')
 mockFunction.mockReturnValue('shoud be return this')
 console.log(mockFunction)
@@ -54,4 +55,16 @@ next: err handle
 
 # 통합테스트
 
-supertest
+외부 call ret까지
+jest 유닛테스트 모듈
+supertest 통합테스트 모듈
+
+# express err handle
+
+app.use(function(error,req,res,next){
+res.json({message:error.message})
+})
+단 async는 이렇게도 catch 불가이므로 보낼 때 next 랩핑
+app.get('\*',function(req,res,next){setImmediate(()=>{next(new Error('some err'));})})
+spp.use(function(error,req,res,next){res.json({message:error.message})})
+에러처리 미들웨어는 가장 마지막에

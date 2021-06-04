@@ -25,4 +25,7 @@ mongo
 
 app.listen(PORT);
 console.log(`Server opened in PORT:${PORT}`);
+app.use((error, req, res, next) => {
+  res.status(500).json({ message: error.message });
+});
 module.exports = app;
