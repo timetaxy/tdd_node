@@ -1,6 +1,7 @@
 TDD for node js
 
-#장점
+# 장점
+
 디버깅 시간 단축, 재설계 용이
 
 #env install
@@ -28,7 +29,8 @@ test(it) 개별테스트
 test(it)
 expect... matcher
 
-#mock
+# mock
+
 const mockFunction=jest.fn()
 //for trace
 mockFunction('test')
@@ -37,11 +39,13 @@ console.log(mockFunction)
 expect(mockFunction).toBeCalledWith('test')
 expect(mockFunction).toBeCalleTimes(1)
 
-#jest 기본 test환경 jsdom -> node
+# est 기본 test환경 jsdom -> node
+
 jest.config.js생성
 https://jestjs.io/docs/configuration
 
-#unit test 에서 req.body 필요시
+# unit test 에서 req.body 필요시
+
 req=httpMocks.createRequest()
 res=httpMocks.createResponse()
 
@@ -68,3 +72,7 @@ res.json({message:error.message})
 app.get('\*',function(req,res,next){setImmediate(()=>{next(new Error('some err'));})})
 spp.use(function(error,req,res,next){res.json({message:error.message})})
 에러처리 미들웨어는 가장 마지막에
+
+# extension: jest runner
+
+# https://www.daleseo.com/jest-basic/

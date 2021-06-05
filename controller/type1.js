@@ -15,3 +15,13 @@ exports.createProduct = async (req, res, next) => {
 
   // res.status(201).send();
 };
+
+exports.getTypes = async (req, res, next) => {
+  try {
+    const allTypes = await type1Model.find({});
+    res.status(200).json(allTypes);
+  } catch (error) {
+    next(error);
+  }
+  // res.status(200).send();
+};
