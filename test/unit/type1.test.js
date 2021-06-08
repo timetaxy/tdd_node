@@ -6,9 +6,13 @@ const type1Model = require("../../models/type1");
 const httpMocks = require("node-mocks-http");
 const newVal = require("../data/type1data.json");
 const newVals = require("../data/all-type1data.json");
+const type1 = require("../../models/type1");
 
 type1Model.create = jest.fn();
 type1Model.find = jest.fn();
+type1Model.findById = jest.fn();
+
+const typeId = "61a71517a0958bee17adc0e8";
 
 let req, res, next;
 
@@ -22,7 +26,7 @@ describe(`Type1 Controller Create`, () => {
     req.body = newVal;
   });
   it(`should have a create product function`, () => {
-    expect(typeof type1Controller.createProduct).toBe(`function`);
+    expect(typeof type1Controller.createTypes).toBe(`function`);
   });
   it(`should call type1Model.create`, async () => {
     // let req = httpMocks.createRequest();
@@ -30,24 +34,24 @@ describe(`Type1 Controller Create`, () => {
     // let next = null;
     // req.body = newType;
 
-    await type1Controller.createProduct(req, res, next);
+    await type1Controller.createTypes(req, res, next);
     expect(type1Model.create).toBeCalledWith(newVal);
   });
   it("should return 201 res code", async () => {
-    await type1Controller.createProduct(req, res, next);
+    await type1Controller.createTypes(req, res, next);
     expect(res.statusCode).toBe(201);
     expect(res._isEndCalled()).toBeTruthy();
   });
   it("should return json body res", async () => {
     type1Model.create.mockReturnValue(newVal);
-    await type1Controller.createProduct(req, res, next);
+    await type1Controller.createTypes(req, res, next);
     expect(res._getJSONData()).toStrictEqual(newVal);
   });
   it(`should handle err`, async () => {
     const errMessage = { message: "descripton property missing" };
     const rejectedPromise = Promise.reject(errMessage);
     type1Model.create.mockReturnValue(rejectedPromise);
-    await type1Controller.createProduct(req, res, next);
+    await type1Controller.createTypes(req, res, next);
     expect(next).toBeCalledWith(errMessage);
   });
 });
@@ -77,6 +81,40 @@ describe("type controller Get", () => {
     //reject( reson )
     type1Model.find.mockReturnValue(rejectedPromise);
     await type1Controller.getTypes(req, res, next);
+    expect(next).toHaveBeenCalledWith(errMsg);
+  });
+});
+
+describe("Type Ctrt GetById", async () => {
+  it("data ctrl getById", () => {
+    expect(typeof type1Controller.getTypesById).toBe("function");
+  });
+  it("shoud call typeModel.findById", async () => {
+    req.params.typeId = typeId;
+    await type1Controller.getTypesById(req, res, next);
+    expect(type1Model.findById).toBeCalledWith(typeId);
+  });
+
+  it("shoud return json body and res code 200", async () => {
+    type1Model.findById.mockReturnValue(newVal);
+    await type1Controller.getTypesById(req, res, next);
+    expect(res.statusCode).toBe(200);
+    expect(res._getJSONData()).toStrictEqual(newVal);
+    expect(res._isEndCalled()).toBeTruthy();
+  });
+
+  it("should ret 404 when item doesnt exist", async () => {
+    type1Model.findById.mockReturnValue(null);
+    await type1Controller.getTypesById(req, res, next);
+    expect(res.statusCode).toBe(404);
+    expect(res._isEndCalled()).toBeTruthy();
+  });
+
+  it("should handle err", async () => {
+    const errMsg = { message: "err" };
+    const rejectedPromise = Promise.reject(errMsg);
+    type1Model.findById.mockReturnValue(rejectedPromise);
+    await type1Controller.getTypesById(req, res, next);
     expect(next).toHaveBeenCalledWith(errMsg);
   });
 });
