@@ -2,6 +2,7 @@
 const st = require("supertest");
 const app = require("../../server");
 const newType = require("../data/type1data.json");
+let firstType;
 
 it("POST /api/1", async () => {
   const response = await st(app).post("/api/1").send(newType);
@@ -26,4 +27,17 @@ it("GET /api/a1/types", async () => {
   expect(Array.isArray(response.body)).toBeTruthy();
   expect(response.body[0].name).toBeDefined();
   expect(response.body[0].description).toBeDefined();
+  firstType = response.body[0];
+});
+
+it("GET /api/a1/types/:typeId", async () => {
+  const res = await st(app).get("/api/1/" + firstType._id);
+  expect(res.statusCode).toBe(200);
+  expect(res.body.name).toBe(firstType.name);
+  expect(res.body.description).toBe(firstType.description);
+});
+
+it("GET id doesnt exist /api/a1/types/:typeId", async () => {
+  const res = await st(app).get("/api/types/61a71517a0958bee17adc011");
+  expect(res.statusCode).toBe(404);
 });
